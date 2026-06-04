@@ -1,6 +1,6 @@
-# Byte-Derived Built-In Type System (C++)
+# Bit-Derived Built-In Type System (C++)
 
-This project implements a byte-oriented, header-only type system that mirrors many built-in C/C++ primitive types and containers using custom, composable types.
+This project implements a bit-oriented, header-only type system that mirrors many built-in C/C++ primitive types and containers using custom, composable types.
 
 ---
 
@@ -8,6 +8,7 @@ This project implements a byte-oriented, header-only type system that mirrors ma
 
 This project includes:
 
+- `Bit` core
 - Bitwise-friendly `Byte`
 - Integer families: `UInt8`, `Int8`, `UInt16`, `Int16`, `UInt32`, `Int32`, `UInt64`, `Int64`, plus convenience aliases `UInt`, `Int`, `ULongInt`, `LongInt`, etc.
 - Floating-point families: `Float32`, `Float64`, plus convenience `Float`, `Double`
@@ -145,6 +146,11 @@ mem.deallocate(raw);
 
 This section outlines per-type APIs, common operations, and typical complexity notes. For exact signatures and semantics, see the headers included by `TypeSystem.h`.
 
+### Bit
+
+- Core: `Byte(uint8_t)`, `.raw()`, `.set(uint8_t)`
+
+  
 ### Byte
 
 - Core: `Byte(uint8_t)`, `.raw()`, `.set(uint8_t)`
