@@ -54,7 +54,7 @@ Or, open the Xcode project/workspace and build/run the C++ Variable Types scheme
 `main.cpp` prints labeled sections and runs through a battery of tests:
 
 • `Byte` bitwise operations: `&`, `|`, `^`, shifts, and stream output
-• Unsigned and signed integers (`UInt8`, `Int8`, `UInt16`, `Int16`, `UInt32`, `Int32`, `UInt64`, `Int64`) each composed of 8, 16, 32, and or 64 bits: arithmetic, comparisons, increment/decrement, sign detection
+• Unsigned and signed integers (`UInt8`, `Int8`, `UInt16`, `Int16`, `UInt32`, `Int32`, `UInt64`, `Int64`) each composed of 8, 16, 32, and 64 bits: arithmetic, comparisons, increment/decrement, sign detection
 • `Float` and `Double`: creation from raw IEEE-754 bytes, sign bit, infinity/NaN detection
 • Logical `Bool`: logical ops, comparisons
 • `Char`: ASCII conversion, classification (`isAlpha`, `isDigit`), increment
@@ -66,11 +66,11 @@ Or, open the Xcode project/workspace and build/run the C++ Variable Types scheme
 • `Reference`: binding and mutation that reflects in underlying memory
 • `Void`: equality and streaming
 • Type aliases (`TypeSystem`) usage: constructing with native literals and mixing helpers
-• Type helpers (`TypeHelpers`) supports these factory functions: `makeBool`, `makeChar`, `makeUInt8`, `makeInt8`, `makeUInt16`, `makeInt16`, `makeUInt`, `makeInt`, `makeULong`, `makeLong`, `makeFloat`, `makeDouble`, `makeIndex`, etc.
+• Type helpers (`TypeHelpers`) supports these factory functions: `makeBool`, `makeChar`, `makeUInt8`, `makeInt8`, `makeUInt16`, `makeInt16`, `makeUInt`, `makeInt`, `makeULongInt`, `makeLongInt`, `makeFloat`, `makeDouble`, `makeIndex`, etc.
 • Type limits: `TypeLimits<T>`::`min`/`max`/`lowest`/`epsilon`/`zero`/`one`
-• `Math` helpers: `Abs`, `Clamp`, `Max`
-• `Algorithms` supports helpers: `Find`, `Count`, `SortAscending`, `SortDescending`, `Reverse`
-• `Conversions`: `numeric` <-> `numeric`, `toByte`, `toChar`, `toBool`, `toFloat`, `toDouble`, `toInt`, `toUInt`, `toLongInt`
+• `Math` helpers: `absol`, `clamp`, `max`
+• `Algorithms` supports helpers: `find`, `count`, `sortAscending`, `sortDescending`, `reverse`
+• Conversions: `numeric` <-> `numeric`, `toByte`, `toChar`, `toBool`, `toFloat`, `toDouble`, `toInt`, `toUInt`, `toLongInt`
 • String conversions and parsing (`StringConversions` and `StringParsing`): `toString<N>`, `toStdString`, `toInt(String)`, `toBool(String)`, `toDouble(String)`, `toChar(String)`, `tryToInt`
 • Type I/O (`TypeIO`): formatted extraction/insertion for `Int`, `Double`, `Bool`, `Char`, `String<N>`
 
@@ -82,36 +82,41 @@ Each section ends with a summary line like "... tests completed" and the program
 
 ## Quick Usage Examples
 
-• Create and use integers:
+### Create and use integers:
 ```
 UInt8 u1(Byte(200));
 UInt8 u2(Byte(25));
 auto sum = u1 + u2; // wrapping or widening semantics as defined in TypeSystem.h
 ```
-• Signed integers from native values:
+
+### Signed integers from native values:
 ```
 Int16 a = Int16::fromSignedValue(300);
 Int16 b = Int16::fromSignedValue(-50);
 a += b;
 ```
-• Floats from raw bytes (IEEE-754, little-endian):
+
+### Floats from raw bytes (IEEE-754, little-endian):
 ```
 Float32 one = Float32::fromBytes(Byte(0x00), Byte(0x00), Byte(0x80), Byte(0x3F));
 ```
-• Fixed-capacity string and append:
+
+### Fixed-capacity string and append:
 ```
 String<20> first("Marco");
 CString<20> tail(" Test");
 first.append(tail);
 ```
-• Vector push/pop and compare:
+
+### Vector push/pop and compare:
 ```
 Vector<Char, 10> letters;
 letters.pushBack('A');
 letters.pushBack('B');
 letters.popBack();
 ```
-• Memory and smart pointers:
+
+### Memory and smart pointers:
 ```
 Memory<Char, 5> mem;
 UniquePtr<Char, 5> up = UniquePtr<Char, 5>::make(mem, 'A');
@@ -136,53 +141,60 @@ mem.deallocate(raw);
 
 ---
 
-## File Reference
+## Files Included
 
 This section outlines per-type APIs, common operations, and typical complexity notes. For exact signatures and semantics, see the headers included by `TypeSystem.h`.
 
 ### Byte
 
-• Core: Byte(uint8_t), .raw(), .set(uint8_t)
-• Bitwise: ~, &, |, ^, <<, >>
-• Streaming: operator<<
+• Core: `Byte(uint8_t)`, `.raw()`, `.set(uint8_t)`
+• Bitwise: `~`, `&`, `|`, `^`, `<<`, `>>`
+• Streaming: `operator<<`
 • Complexity: All operations are O(1).
+
 
 ### Bool
 
 • Core: construct from bool or Byte
-• Conversion: .toByte()
-• Logical: !, &&, ||
+• Conversion: `.toByte()`
+• Logical: `!`, `&&`, `||`
 • Comparisons and streaming supported
 • Complexity: O(1).
+
 
 ### Char
 
 • Core: construct from char or Byte
-• Conversion: .toAscii(), .toByte()
-• Classification: .isAlpha(), .isDigit()
-• Increment: ++
+• Conversion: `.toAscii()`, `.toByte()`
+• Classification: `.isAlpha()`, `.isDigit()`
+• Increment: `++`
 • Comparisons and streaming supported
 • Complexity: O(1).
 
-### Integer Types (fixed-width):
-### UInt8, Int8, UInt16, Int16, UInt32, Int32, UInt64, Int64
+
+### Integer Types (fixed-width): UInt(8/16/32/64) and Int(8/16/32/64)
 
 • Construction: from Byte components or native values (e.g., IntX::fromSignedValue)
-• Arithmetic: +, -, *, /, %
-• Increment/decrement: ++, --
-• Comparisons: <, <=, >, >=, ==, !=
+• Arithmetic: `+`, `-`, `*`, `/`, `%`
+• Increment/decrement: `++`, `--`
+• Comparisons: `<`, `<=`, `>`, `>=`, `==`, `!=`
 • Conversion helpers:
-   • UInt8/Int8: .toInt()
-   • UInt16: .toUnsignedInt(), Int16: .toInt()
-   • UInt32: .toUnsignedLongLong(), Int32: .toLongLong()
-   • UInt64: .toUnsignedLongLong(), Int64: .toLongLong()
+   • UInt8:`.toInt()`
+   • Int8: `.toInt()`
+   • UInt16: `.toUnsignedInt()`
+   • Int16: `.toInt()`
+   • UInt32: `.toUnsignedLongLong()`
+   • Int32: `.toLongLong()`
+   • UInt64: `.toUnsignedLongLong()`
+   • Int64: `.toLongLong()`
 • Complexity: O(1) for arithmetic/comparisons.
+
 
 ### Float32 / Float64
 
-• Construction from raw IEEE-754 bytes: Float32::fromBytes(b0,b1,b2,b3), Float64::fromBytes(b0..b7)
-• Introspection: .signBit(), .isInfinity(), .isNaN()
-• Conversion: .toFloat() / .toDouble()
+• Construction from raw IEEE-754 bytes: `Float32::fromBytes(b0,b1,b2,b3)`, `Float64::fromBytes(b0..b7)`
+• Introspection: `.signBit()`, `.isInfinity()`, `.isNaN()`
+• Conversion: `.toFloat()` / `.toDouble()`
 • Comparisons and streaming supported
 • Complexity: O(1).
 
@@ -193,35 +205,39 @@ Float64:  [sign:1][exponent:11][fraction:52]
 ```
 Little-endian byte ordering is used when constructing from bytes in `main.cpp`.
 
+
 ### String<N>
 
-• Construction: from C string literal (const char*)
-• Capacity/size: .capacity(), .size(), .empty(), .full()
-• Mutation: .pushBack(Char), .popBack(), .append(String), .append(CString)
-• Indexing: operator[] with String<N>::makeIndex(i)
-• Housekeeping: .clear()
+• Construction: from C string literal (`const char*`)
+• Capacity/size: `.capacity()`, `.size()`, `.empty()`, `.full()`
+• Mutation: `.pushBack(Char)`, `.popBack()`, `.append(String)`, `.append(CString)`
+• Indexing: `operator[]` with `String<N>::makeIndex(i)`
+• Housekeeping: `.clear()`
 • Comparisons and streaming supported
-• Complexity: pushBack/popBack O(1) until capacity; append O(m); comparisons O(n).
+• Complexity: `pushBack`/`popBack` O(1) until `capacity`; `append` O(m); comparisons O(n).
+
 
 ### CString<N>
 
-• Similar to String<N> but null-terminated semantics
-• Additional: .isTerminated()
-• Complexity: like String<N>; termination checks O(1).
+• Similar to `String<N>` but null-terminated semantics
+• Additional: `.isTerminated()`
+• Complexity: like `String<N>`; termination checks O(1).
+
 
 ### Array<T, N>
 
 • Fixed-size container
-• Access: operator[] with String<N>::makeIndex(i) style index
-• Introspection: .size()
+• Access: `operator[]` with `String<N>::makeIndex(i)` style index
+• Introspection: `.size()`
 • Streaming supported
 • Complexity: indexing O(1).
+
 
 ### Array2D<T, R, C>
 
 • 2D fixed-size container
-• Access: operator()(rowIndex, colIndex) using Array2D<...>::makeIndex(i) for each dimension
-• Introspection: .rowCount(), .colCount(), .size()
+• Access: `operator()(rowIndex, colIndex)` using `Array2D<...>::makeIndex(i)` for each dimension
+• Introspection: `.rowCount()`, `.colCount()`, `.size()`
 • Streaming supported
 • Complexity: indexing O(1).
 
@@ -229,51 +245,55 @@ Row-major mapping (conceptual):
 ```
 linearIndex = row * C + col
 ```
+
 ### Vector<T, Capacity>
 
-• Capacity/size: .capacity(), .size(), .empty(), .full(), .clear()
-• Index helpers: static makeIndex(ull)
-• Element ops: .pushBack, .popBack, .insertAt, .removeAt, .set
-• Access: .at, operator[], .front, .back
-• Search: .contains, .indexOf
-• Equality: operator==, operator!=
+• Capacity/size: `.capacity()`, `.size()`, `.empty()`, `.full()`, `.clear()`
+• Index helpers: `static makeIndex(ull)`
+• Element ops: `.pushBack`, `.popBack`, `.insertAt`, `.removeAt`, `.set`
+• Access: `.at`, `operator[]`, `.front`, `.back`
+• Search: `.contains`, `.indexOf`
+• Equality: `operator==`, `operator!=`
 • Streaming supported
-• Complexity: pushBack/popBack/front/back O(1); insertAt/removeAt O(n); contains/indexOf O(n).
+• Complexity: `pushBack`/`popBack`/`front`/`back` O(1); `insertAt`/`removeAt` O(n); `contains`/`indexOf` O(n).
 
 Layout (conceptual):
 ```
 [0][1][2] ... [size-1] [unused ... capacity-1]
 ```
+
 ### Memory<T, N> and Pointer<T, N>
 
-• Memory introspection: .empty(), .full()
-• Allocation: .allocate(value) → Pointer
-• Access: .get(Pointer), .set(Pointer, value)
-• Lifetime: .deallocate(Pointer), .contains(Pointer)
+• Memory introspection: `.empty()`, `.full()`
+• Allocation: `.allocate(value)` → `Pointer`
+• Access: `.get(Pointer)`, `.set(Pointer, value)`
+• Lifetime: `.deallocate(Pointer)`, `.contains(Pointer)`
 • Streaming supported for memory and pointer
-• Pointer helpers: .isNull(), .isNotNull(), equality/inequality
+• Pointer helpers: `.isNull()`, `.isNotNull()`, equality/inequality
 • Complexity: allocation/deallocation may scan for free slots → O(N) worst case; get/set O(1).
 
 Visualization:
 ```
 Memory slots: [0] [1] [2] [3] [4]
-Pointers:      ^A   ^B   ^C
+Pointers:      ^A  ^B  ^C
 ```
+
 ### UniquePtr<T, N>
 
-• Factory: UniquePtr::make(memory, value)
-• Access/mutation: .get(memory), .set(memory, value)
-• Reset/release: .reset(memory, newValue), .release() → raw Pointer
-• Null state: .isNull()
+• Factory: `UniquePtr::make(memory, value)`
+• Access/mutation: `.get(memory)`, `.set(memory, value)`
+• Reset/release: `.reset(memory, newValue)`, `.release()` → raw `Pointer`
+• Null state: `.isNull()`
 • Complexity: O(1) operations; underlying memory actions as above.
+
 
 ### SharedMemory<T, N> and SharedPtr<T, N>
 
-• Factory: SharedPtr::make(sharedMemory, value)
-• Sharing: .share(sharedMemory)
-• Access/mutation: .get(sharedMemory), .set(sharedMemory, value)
-• Lifetime: .reset(sharedMemory)
-• Ref counting: .useCount(sharedMemory), .unique(sharedMemory)
+• Factory: `SharedPtr::make(sharedMemory, value)`
+• Sharing: `.share(sharedMemory)`
+• Access/mutation: `.get(sharedMemory)`, `.set(sharedMemory, value)`
+• Lifetime: `.reset(sharedMemory)`
+• Ref counting: `.useCount(sharedMemory)`, `.unique(sharedMemory)`
 • Complexity: O(1) for ref-count changes and access.
 
 Ref-count concept:
@@ -282,38 +302,42 @@ Ref-count concept:
    ^               ^
 sharedA         sharedB
 ```
+
 ### Reference<T, N>
 
-• Bind: Reference::bind(Pointer)
-• Access/mutation: .get(memory), .set(memory, value)
+• Bind: `Reference::bind(Pointer)`
+• Access/mutation: `.get(memory)`, `.set(memory, value)`
 • Equality/inequality supported
 • Complexity: O(1).
+
 
 ### Enum
 
-• Construction: Enum::fromRange(value, min, max)
-• Increment/decrement: prefix and postfix ++/-- within bounds
-• Assignment within range: .setValue(Int32) returns success Bool
-• Range compatibility: .sameRange(other)
+• Construction: `Enum::fromRange(value, min, max)`
+• Increment/decrement: prefix and postfix `++`/`--` within bounds
+• Assignment within range: `.setValue(Int32)` returns success Bool
+• Range compatibility: `.sameRange(other)`
 • Equality/inequality supported
 • Complexity: O(1).
 
+
 ### TypeLimits<T>
 
-• Numeric bounds: .min(), .max()
-• Floating-point extras: .lowest(), .epsilon()
-• Constants: .zero(), .one()
+• Numeric bounds: `.min()`, `.max()`
+• Floating-point extras: `.lowest()`, `.epsilon()`
+• Constants: `.zero()`, `.one()`
 • Complexity: O(1).
+
 
 ### Helpers Overview
 
-• Type helpers (factory functions): makeBool, makeChar, makeUInt8, makeInt8, makeUInt16, makeInt16, makeUInt, makeInt, makeULong, makeLong, makeFloat, makeDouble, makeIndex
-• Math: Abs, Clamp, Max
-• Algorithms: Find, Count, SortAscending, SortDescending, Reverse (typical complexities: Find/Count O(n), Sort* depends on implementation; see Algorithms.h)
-• Conversions: toDouble, toInt, toLongInt, toUInt, toByte, toChar, toBool, toFloat
-• String conversions: toString<N>(value), toStdString(String/CString)
-• String parsing: toInt, tryToInt, toBool, tryToBool, toDouble, tryToDouble, toChar, tryToChar for custom String/CString and std::string
-• Type I/O: stream insertion/extraction for core types (Int, Double, Bool, Char, String<N>, CString<N>, etc.)
+• Type helpers (factory functions): `makeBool`, `makeChar`, `makeUInt8`, `makeInt8`, `makeUInt16`, `makeInt16`, `makeUInt`, `makeInt`, `makeULong`, `makeLong`, `makeFloat`, `makeDouble`, `makeIndex`
+• Math: `absol`, `clamp`, `max`
+• Algorithms: `find`, `count`, `sortAscending`, `sortDescending`, `reverse` (typical complexities: find/count O(n), Sort* depends on implementation; see `Algorithms.h`)
+• Conversions: `toDouble`, `toInt`, `toLongInt`, `toUInt`, `toByte`, `toChar`, `toBool`, `toFloat`
+• String conversions: `toString<N>(value)`, `toStdString(String)`, `toStdString(CString)`
+• String parsing: `toInt`, `tryToInt`, `toBool`, `tryToBool`, `toDouble`, `tryToDouble`, `toChar`, `tryToChar` for custom `String`/`CString` and `std::string`
+• Type I/O: stream insertion/extraction for core types (`Int`, `Double`, `Bool`, `Char`, `String<N>`, `CString<N>`, etc.)
 
 ---
 
