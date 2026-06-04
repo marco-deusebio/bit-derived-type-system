@@ -1,6 +1,6 @@
-# Byte-Derived Built-In Type System (C++)
+# Bit-Derived Built-In Type System (C++)
 
-This project implements a byte-oriented, header-only type system that mirrors many built-in C/C++ primitive types and containers using custom, composable types.
+This project implements a bit-oriented, header-only type system that mirrors many built-in C/C++ primitive types and containers using custom, composable types.
 
 ---
 
