@@ -14,6 +14,7 @@
 
 #include <cstdint>
 
+#include "Bit.h"
 #include "Bool.h"
 #include "Byte.h"
 #include "Char.h"
@@ -34,6 +35,86 @@
 #include "Float64.h"
 
 #include "MyBuiltInTypes.h"
+
+// =========================================================
+// Bit conversions
+// =========================================================
+
+inline Bit toBit(const Bit& value) {
+    return value;
+}
+
+inline Bit toBit(bool value) {
+    return Bit(value);
+}
+
+inline Bit toBit(const Bool& value) {
+    return Bit(value.toByte().raw() != 0);
+}
+
+inline Bit toBit(const Byte& value) {
+    return Bit(value.raw() != 0);
+}
+
+inline Bit toBit(const Char& value) {
+    return Bit(value.toByte().raw() != 0);
+}
+
+inline Bit toBit(const UInt8& value) {
+    return Bit(value.toInt() != 0);
+}
+
+inline Bit toBit(const Int8& value) {
+    return Bit(value.toInt() != 0);
+}
+
+inline Bit toBit(const UInt16& value) {
+    return Bit(value.toUnsignedInt() != 0);
+}
+
+inline Bit toBit(const Int16& value) {
+    return Bit(value.toInt() != 0);
+}
+
+inline Bit toBit(const UInt32& value) {
+    return Bit(value.toUnsignedLongLong() != 0);
+}
+
+inline Bit toBit(const Int32& value) {
+    return Bit(value.toLongLong() != 0);
+}
+
+inline Bit toBit(const UInt64& value) {
+    return Bit(value.toUnsignedLongLong() != 0);
+}
+
+inline Bit toBit(const Int64& value) {
+    return Bit(value.toLongLong() != 0);
+}
+
+inline Bit toBit(const Float32& value) {
+    return Bit(value.toFloat() != 0.0f);
+}
+
+inline Bit toBit(const Float64& value) {
+    return Bit(value.toDouble() != 0.0);
+}
+
+inline Bit toBit(unsigned long long value) {
+    return Bit(value != 0);
+}
+
+inline Bit toBit(long long value) {
+    return Bit(value != 0);
+}
+
+inline Bit toBit(float value) {
+    return Bit(value != 0.0f);
+}
+
+inline Bit toBit(double value) {
+    return Bit(value != 0.0);
+}
 
 // =========================================================
 // Bool conversions

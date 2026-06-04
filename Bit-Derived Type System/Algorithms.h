@@ -79,7 +79,7 @@ void reverse(Vector<T, Capacity>& vector) {
     --right;
     
     while (left < right) {
-        Swap(vector[makeIndex(left)], vector[makeIndex(right)]);
+        swap(vector[makeIndex(left)], vector[makeIndex(right)]);
         ++left;
         --right;
     }
@@ -99,7 +99,7 @@ void sortAscending(Vector<T, Capacity>& vector) {
             UInt64 nextIndex = makeIndex(i + 1);
             
             if ((vector[currentIndex] > vector[nextIndex]).toByte().raw() != 0) {
-                Swap(vector[currentIndex], vector[nextIndex]);
+                swap(vector[currentIndex], vector[nextIndex]);
             }
         }
     }
@@ -119,7 +119,7 @@ void sortDescending(Vector<T, Capacity>& vector) {
             UInt64 nextIndex = makeIndex(i + 1);
             
             if ((vector[currentIndex] < vector[nextIndex]).toByte().raw() != 0) {
-                Swap(vector[currentIndex], vector[nextIndex]);
+                swap(vector[currentIndex], vector[nextIndex]);
             }
         }
     }

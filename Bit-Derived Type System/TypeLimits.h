@@ -20,6 +20,27 @@
 template <typename T>
 class TypeLimits;
 
+// Bit
+template <>
+class TypeLimits<Bit> {
+public:
+    static Bit min() {
+        return makeBit(false);
+    }
+    
+    static Bit max() {
+        return makeBit(true);
+    }
+    
+    static Bit zero() {
+        return makeBit(false);
+    }
+    
+    static Bit one() {
+        return makeBit(true);
+    }
+};
+
 // Bool
 template <>
 class TypeLimits<Bool> {

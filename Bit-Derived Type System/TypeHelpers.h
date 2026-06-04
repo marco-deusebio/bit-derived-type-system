@@ -15,6 +15,7 @@
 #include <cstdint>
 #include <cstring>
 
+#include "Bit.h"
 #include "Byte.h"
 #include "Bool.h"
 #include "Char.h"
@@ -33,6 +34,18 @@
 
 #include "Float32.h"
 #include "Float64.h"
+
+inline Bit makeBit(bool value) {
+    return Bit(value);
+}
+
+inline Bit makeBit(unsigned long long value) {
+    return Bit(value != 0);
+}
+
+inline Bit makeBit(long long value) {
+    return Bit(value != 0);
+}
 
 inline Byte makeByte(unsigned long long value) {
     return Byte(static_cast<std::uint8_t>(value & 0xFF));

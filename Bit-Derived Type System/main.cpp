@@ -15,6 +15,41 @@ int main() {
     std::cout << "======= START OF TEST FRAMEWORK FOR =======\n";
     std::cout << "==== BYTE-DERIVED BUILT-IN TYPE SYSTEM ====\n\n";
     {
+        std::cout << "\n\n===== Bit Test =====\n\n";
+        {
+            Bit zero = 0;
+            Bit one = 1;
+            
+            std::cout << "zero: " << zero << '\n';
+            std::cout << "one: " << one << '\n';
+            
+            std::cout << "!zero: " << !zero << '\n';
+            std::cout << "one & zero: " << (one & zero) << '\n';
+            std::cout << "one | zero: " << (one | zero) << '\n';
+            std::cout << "one ^ zero: " << (one ^ zero) << '\n';
+            
+            Byte byte = 10; // binary 00001010
+            
+            std::cout << "\nbyte: " << byte << '\n';
+            
+            std::cout << "bit 0: " << byte.getBit(0) << '\n';
+            std::cout << "bit 1: " << byte.getBit(1) << '\n';
+            std::cout << "bit 2: " << byte.getBit(2) << '\n';
+            std::cout << "bit 3: " << byte.getBit(3) << '\n';
+            
+            std::cout << "byte << 1: " << (byte << 1) << '\n';
+            std::cout << "byte >> 1: " << (byte >> 1) << '\n';
+            std::cout << "~byte: " << (~byte) << '\n';
+            
+            Byte other = 12; // binary 00001100
+            
+            std::cout << "\nother: " << other << '\n';
+            std::cout << "byte & other: " << (byte & other) << '\n';
+            std::cout << "byte | other: " << (byte | other) << '\n';
+            std::cout << "byte ^ other: " << (byte ^ other) << '\n';
+        }
+        std::cout << "\nBit type tests completed.\n\n";
+            
         std::cout << "\n\n===== Byte Test =====\n\n";
         {
             Byte byteA(5);
@@ -1013,13 +1048,13 @@ int main() {
         std::cout << "\n\n===== Math Helper Test =====\n\n";
         {
             Int health = -25;
-            Int clampedHealth = Clamp(health, Int(0), Int(100));
+            Int clampedHealth = clamp(health, Int(0), Int(100));
             
             Double score = 98.75;
-            Double maxScore = Max(score, Double(100.0));
+            Double maxScore = max(score, Double(100.0));
             
             std::cout << "health: " << health << '\n';
-            std::cout << "myAbs(health): " << Abs(health) << '\n';
+            std::cout << "myAbs(health): " << absol(health) << '\n';
             std::cout << "clampedHealth: " << clampedHealth << '\n';
             
             std::cout << "score: " << score << '\n';

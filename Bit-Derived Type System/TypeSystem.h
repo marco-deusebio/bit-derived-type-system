@@ -9,6 +9,7 @@
 #define TYPE_SYSTEM_H
 
 // Foundation
+#include "Bit.h"
 #include "Byte.h"
 #include "Bool.h"
 #include "Char.h"
